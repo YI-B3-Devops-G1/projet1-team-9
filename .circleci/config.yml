@@ -1,53 +1,53 @@
 version: 2.1
-  executor:
-    mypublisher:
-      docker:
-          - image: circleci/node:10
-  jobs:
-    install:
-      executor: mypublisher
-      steps:
-        - checkout
-        - run:
-            name: Install node
-            command: npm install
-    build_image:
-      executor: mypublisher
-      steps:
-        - checkout
-        - setup_remote_docker
-        - run:
-            name: Build image
-            command: docker build -f docker/api/Dockerfile -t aexandregelin/nodejs-team9:latest .
-        - deploy:
-            name: Publish on DockerHub
-            command: |
+executors:
+  mypublisher:
+    docker:
+      - image: circleci/node:10
+jobs:
+  install:
+    executor: mypublisher
+    steps:
+      - checkout
+      - run:
+          name: Install node
+          command: npm install
+  build_image:
+    executor: mypublisher
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build image
+          command: docker build -f docker/api/Dockerfile -t aexandregelin/nodejs-team9:latest .
+      - deploy:
+          name: Publish on DockerHub
+          command: |
               echo "$DOCKERHUB_pwd" | docker login -u larnico --password-stdin
               docker push aexandregelin/nodejs-team9:latest
 
-  workflows:
-    version: 2
-    dev:
-      jobs:
-        - install:
-            filters:
-              branches:
-                only: master
-        - build_image:
-            requires:
-              - install
-            filters:
-              branches:
-                only: master
-    prod:
-      jobs:
-        - install:
+workflows:
+  version: 2
+  dev:
+    jobs:
+      - install:
+          filters:
+            branches:
+               only: develop
+      - build_image:
+          requires:
+            - install
+          filters:
+            branches:
+              only: develop
+  prod:
+    jobs:
+      - install:
+        filters:
+          branches:
+            only: master
+      - build_image:
+          requires:
+            - install
           filters:
             branches:
               only: master
-        - build_image:
-            requires:
-              - install
-            filters:
-              branches:
-                only: master
