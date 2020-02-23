@@ -22,7 +22,7 @@ jobs:
       - deploy:
           name: Publish on DockerHub
           command: |
-              echo "$DOCKERHUB_pwd" | docker login -u larnico --password-stdin
+              echo "$DOCKERHUB_pwd" | docker login -u aexandregelin --password-stdin
               docker push aexandregelin/nodejs-team9:latest
 
 workflows:
