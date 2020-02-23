@@ -14,8 +14,8 @@ jobs:
           name: Build image docker
           command: docker build -f docker/api/Dockerfile -t aexandregelin/nodejs-team9:latest .
       - run:
-          name: Archive image docker
-          command: docker save -o save_image_docker.tar aexandregelin\nodejs-team9
+          name: Archive docker image
+          command: docker save -o save_image_docker.tar aexandregelin/nodejs-team9
   publish_image:
     executor: mypublisher
     steps:
@@ -27,7 +27,7 @@ jobs:
           name: Publish on Docker
           command:
             docker login -u "aexandregelin" -p
-            docker push aexandregelin\nodejs-team9:latest
+            docker push aexandregelin/nodejs-team9:latest
 workflows:
   version: 2
   build-master:
