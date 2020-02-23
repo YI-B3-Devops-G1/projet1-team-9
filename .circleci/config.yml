@@ -20,7 +20,7 @@ jobs:
     steps:
       - setup_remote_docker
       - run:
-          name: get docker archive
+          name: Get docker archive
           command: docker load -i sauv_image_docker.tar
       - run:
           name: Publish on Docker
