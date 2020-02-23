@@ -1,11 +1,10 @@
  version: 2
  executors:
-   machine:
-     docker:
-       - image: circleci/node:10
+  docker:
+    - image: circleci/node:10
  jobs:
    build_image:
-     executor: machine
+     executor: docker
      steps:
        - checkout
        - setup_remote_docker
