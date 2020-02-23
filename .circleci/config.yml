@@ -1,5 +1,5 @@
 version: 2.1
-  executors:
+  executor:
     mypublisher:
       docker:
           - image: circleci/node:10
