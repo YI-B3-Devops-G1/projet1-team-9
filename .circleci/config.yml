@@ -12,7 +12,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build image docker
-          command: docker build -t aexandregelin\nodejs-team9:latest .
+          command: docker build -f docker/api/Dockerfile -t larnico/nodejs-api_team11:latest .
       - run:
           name: Archive image docker
           command: docker save -o save_image_docker.tar aexandregelin\nodejs-team9
