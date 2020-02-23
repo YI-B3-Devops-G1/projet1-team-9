@@ -1,24 +1,43 @@
- version: 2
- executors:
-  docker:
-    - image: circleci/node:10
- jobs:
-   build_image:
-     executor: docker
-     steps:
-       - checkout
-       - setup_remote_docker
-       - run:
-           name: Build image docker
-           command: docker build -t larnico\nodejs-api_team11:latest docker/api/
-       - run:
-           name: Archive image docker
-           command: docker save -o sauv_image_docker.tar larnico\nodejs-api_team11
- workflows:
-   version: 2
-   build-master:
-     jobs:
-       - build_image:
-           filters:
-             branches:
-               only: master
+version: 2.1
+executors:
+  mypublisher:
+    docker:
+      - image: circleci/node:10
+jobs:
+  build_image:
+    executor: mypublisher
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build image docker
+          command: docker build -t aexandregelin\nodejs-team9:latest docker/api/
+      - run:
+          name: Archive image docker
+          command: docker save -o save_image_docker.tar aexandregelin\nodejs-team9
+  publish_image:
+    executor: mypublisher
+    steps:
+      - setup_remote_docker
+      - run:
+          name: get docker archive
+          command: docker load -i sauv_image_docker.tar
+      - run:
+          name: Publish on Docker
+          command:
+            docker login -u "aexandregelin" -p
+            docker push aexandregelin\nodejs-team9:latest
+workflows:
+  version: 2
+  build-master:
+    jobs:
+      - build_image:
+          filters:
+            branches:
+              only: master
+      - publish_image:
+          requires:
+            - build_image
+          filters:
+            branches:
+              only: master
