@@ -1,11 +1,11 @@
  version: 2
  executors:
-   publisher:
+   machine:
      docker:
        - image: circleci/node:10
  jobs:
    build_image:
-     executor: publisher
+     executor: machine
      steps:
        - checkout
        - setup_remote_docker
